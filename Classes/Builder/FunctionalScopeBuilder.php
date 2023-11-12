@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUnhandledExceptionInspection */
+<?php
+
+/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types=1);
 
@@ -151,7 +153,7 @@ class FunctionalScopeBuilder
     {
         $root = dirname(__DIR__, 2);
 
-        return $root . '/var/tests/functional-' . $this->instanceName . $subPath;
+        return $root.'/var/tests/functional-'.$this->instanceName.$subPath;
     }
 
     public function getDatabasePath(): string
@@ -165,14 +167,14 @@ class FunctionalScopeBuilder
             throw new \RuntimeException('You must set the path to your vendor: ->withVendorPath(...)');
         }
 
-        $classLoader = require $this->vendorPath . '/autoload.php';
+        $classLoader = require $this->vendorPath.'/autoload.php';
 
         // Clean ups
         GeneralUtility::purgeInstances();
         $this->getConnectionPool()->resetConnections();
 
         @unlink($this->getDatabasePath());
-        @unlink($this->getInstancePath('/config/sites/' . $this->instanceName . '/config.yaml'));
+        @unlink($this->getInstancePath('/config/sites/'.$this->instanceName.'/config.yaml'));
         $this->createDirectory($this->getInstancePath());
         $this->createDirectory($this->getInstancePath('/public'));
         $this->createDirectory($this->getInstancePath('/public/typo3conf'));
@@ -228,7 +230,8 @@ class FunctionalScopeBuilder
         $query
             ->insert('pages')
             ->values(['uid' => 1, 'pid' => 0, 'title' => 'root page', 'slug' => '/'])
-            ->executeStatement();
+            ->executeStatement()
+        ;
 
         $query = $this->getQueryBuilder('sys_template');
         $query
@@ -240,9 +243,10 @@ class FunctionalScopeBuilder
                     page = PAGE
                     page.10 = TEXT
                     page.10.value = Hello World
-                '
+                ',
             ])
-            ->executeStatement();
+            ->executeStatement()
+        ;
 
         return $this;
     }
@@ -286,9 +290,9 @@ class FunctionalScopeBuilder
 
         $this->createDirectory($this->getInstancePath('/config'));
         $this->createDirectory($this->getInstancePath('/config/sites'));
-        $this->createDirectory($this->getInstancePath('/config/sites/' . $this->instanceName));
+        $this->createDirectory($this->getInstancePath('/config/sites/'.$this->instanceName));
         file_put_contents(
-            $this->getInstancePath('/config/sites/' . $this->instanceName . '/config.yaml'),
+            $this->getInstancePath('/config/sites/'.$this->instanceName.'/config.yaml'),
             Yaml::dump($configuration, 99, 2)
         );
 
@@ -357,7 +361,7 @@ class FunctionalScopeBuilder
      */
     protected function getPhpFile(array $configuration): string
     {
-        return '<?php return ' . var_export($configuration, true) . ';';
+        return '<?php return '.var_export($configuration, true).';';
     }
 
     /** @noinspection PhpExpressionResultUnusedInspection */

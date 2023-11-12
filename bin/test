@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+tools/php-cs-fixer fix
+vendor/bin/phpunit

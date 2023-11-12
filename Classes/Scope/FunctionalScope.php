@@ -50,12 +50,12 @@ class FunctionalScope
 
     public function getInstancePath(string $path = ''): string
     {
-        return $this->instancePath . $path;
+        return $this->instancePath.$path;
     }
 
     public function getDatabasePath(): string
     {
-        return $this->instancePath . '/database.sqlite';
+        return $this->instancePath.'/database.sqlite';
     }
 
     public function getApplication(): Application
@@ -82,7 +82,8 @@ class FunctionalScope
         $query
             ->insert($table)
             ->values($data)
-            ->executeStatement();
+            ->executeStatement()
+        ;
 
         return $this;
     }
@@ -103,6 +104,7 @@ class FunctionalScope
 
     /**
      * @param array<string, mixed> $by
+     *
      * @return array<string, mixed>
      */
     public function getRecords(string $table, array $by = []): array
@@ -110,7 +112,7 @@ class FunctionalScope
         try {
             $byString = json_encode($by, JSON_THROW_ON_ERROR);
         } catch (\Throwable $e) {
-            throw new \RuntimeException('Could not json encode by statement on call of ' . __METHOD__, 0, $e);
+            throw new \RuntimeException('Could not json encode by statement on call of '.__METHOD__, 0, $e);
         }
 
         $query = $this->getConnectionPool()->getQueryBuilderForTable($table);
@@ -132,7 +134,7 @@ class FunctionalScope
         try {
             $this->getSchemaManager()->createTable($table);
         } catch (Exception $e) {
-            throw new RuntimeException('Could not create table in tests: ' . $e->getMessage());
+            throw new RuntimeException('Could not create table in tests: '.$e->getMessage());
         }
 
         return $this;
@@ -143,7 +145,7 @@ class FunctionalScope
         try {
             $this->getSchemaManager()->alterTable($tableDiff);
         } catch (Exception $e) {
-            throw new RuntimeException('Could not alter table in tests: ' . $e->getMessage());
+            throw new RuntimeException('Could not alter table in tests: '.$e->getMessage());
         }
 
         return $this;
@@ -155,7 +157,8 @@ class FunctionalScope
             return $this
                 ->getConnectionPool()
                 ->getConnectionByName('Default')
-                ->createSchemaManager();
+                ->createSchemaManager()
+            ;
         } catch (Exception) {
             throw new RuntimeException('Could not create schema-manager in tests');
         }

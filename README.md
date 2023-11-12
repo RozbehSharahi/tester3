@@ -40,6 +40,6 @@ class FunctionalScopeBuilderTest extends TestCase
 - [ ] Write docker env for contribution
 - [ ] Test on TYPO3 11
 - [ ] Introduce CI-testing
-- [ ] Introduce code-sniffer
+- [x] Introduce code-sniffer
 - [ ] More tests
 - [ ] setup test database only once before all tests and then copy to every scope (performance)

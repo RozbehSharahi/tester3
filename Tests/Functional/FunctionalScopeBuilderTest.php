@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rozbehsharahi\Tester3\Tests\Functional;
 
 use PHPUnit\Framework\TestCase;
@@ -12,7 +14,7 @@ class FunctionalScopeBuilderTest extends TestCase
 
     public function setUp(): void
     {
-        $this->scopeBuilder = (new FunctionalScopeBuilder())->withVendorPath(__DIR__ . '/../../vendor');
+        $this->scopeBuilder = (new FunctionalScopeBuilder())->withVendorPath(__DIR__.'/../../vendor');
     }
 
     public function testCanCreateScopeAndAccessibleHomepage(): void
@@ -22,7 +24,7 @@ class FunctionalScopeBuilderTest extends TestCase
         self::assertSame(FunctionalScopeBuilder::DEFAULT_INSTANCE_NAME, $scope->getInstanceName());
         self::assertDirectoryExists($scope->getInstancePath());
         self::assertFileExists($scope->getDatabasePath());
-        self::assertFileExists($scope->getInstancePath() . '/config/sites/test-app/config.yaml');
+        self::assertFileExists($scope->getInstancePath().'/config/sites/test-app/config.yaml');
         self::assertCount(1, $scope->getRecords('pages'));
         self::assertSame('root page', $scope->getRecord('pages', 1)['title']);
 
