@@ -10,6 +10,12 @@ tested against.
 
 Every scope has its own sqlite-database, site-config and typo3-settings and leads ideally to full determinism.
 
+## Installation
+
+```shell
+composer require --dev rozbehsharahi/tester3
+```
+
 ## Usage
 
 ```php
