@@ -68,7 +68,7 @@ class FunctionalScopeBuilderTest extends TestCase
     {
         $scope = $this->scopeBuilder->withSiteBase('/test-app')->build();
 
-        self::assertSame(404, $scope->doServerRequest(new ServerRequest('/'))->getStatusCode());
-        self::assertSame(200, $scope->doServerRequest(new ServerRequest('/test-app'))->getStatusCode());
+        self::assertSame(404, $scope->request('/')->getStatusCode());
+        self::assertSame(200, $scope->request('/test-app')->getStatusCode());
     }
 }

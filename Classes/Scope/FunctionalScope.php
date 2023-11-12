@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rozbehsharahi\Tester3\Scope;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Table;
@@ -13,6 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Rozbehsharahi\Tester3\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Frontend\Http\Application;
 
 class FunctionalScope
@@ -73,8 +75,15 @@ class FunctionalScope
         return $this->getApplication()->handle($request);
     }
 
+    public function request(string $path, string $method = 'GET'): ResponseInterface
+    {
+        return $this->doServerRequest(new ServerRequest($path, $method));
+    }
+
     /**
      * @param array<string, int|string|boolean> $data
+     *
+     * @throws DBALException
      */
     public function createRecord(string $table, array $data): self
     {
