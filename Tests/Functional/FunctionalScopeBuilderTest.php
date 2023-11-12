@@ -63,4 +63,12 @@ class FunctionalScopeBuilderTest extends TestCase
         $siteYaml = file_get_contents($scope->getInstancePath('/config/sites/test-app/config.yaml'));
         self::assertStringContainsString('rootPageId: 2', $siteYaml);
     }
+
+    public function testCanConfigureSiteBase(): void
+    {
+        $scope = $this->scopeBuilder->withSiteBase('/test-app')->build();
+
+        self::assertSame(404, $scope->doServerRequest(new ServerRequest('/'))->getStatusCode());
+        self::assertSame(200, $scope->doServerRequest(new ServerRequest('/test-app'))->getStatusCode());
+    }
 }
