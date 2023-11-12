@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace Rozbehsharahi\Tester3\Builder;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Rozbehsharahi\Tester3\Exception\RuntimeException;
 use Rozbehsharahi\Tester3\Scope\FunctionalScope;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -378,12 +377,8 @@ class FunctionalScopeBuilder
 
         $siteFinder->getAllSites(false);
 
+        /** @var CacheManager $cacheManager */
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-
-        if (!$cacheManager) {
-            throw new RuntimeException('Could not retrieve cache-manager for testing');
-        }
-
         $cacheManager->getCache('rootline')->flush();
 
         return $this;

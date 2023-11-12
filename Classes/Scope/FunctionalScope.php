@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rozbehsharahi\Tester3\Scope;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Table;
@@ -82,8 +81,6 @@ class FunctionalScope
 
     /**
      * @param array<string, int|string|boolean> $data
-     *
-     * @throws DBALException
      */
     public function createRecord(string $table, array $data): self
     {
@@ -114,7 +111,7 @@ class FunctionalScope
     /**
      * @param array<string, mixed> $by
      *
-     * @return array<string, mixed>
+     * @return array<int, array<string, mixed>>
      */
     public function getRecords(string $table, array $by = []): array
     {

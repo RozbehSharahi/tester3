@@ -30,7 +30,8 @@
         "typo3/cms-lowlevel": "^11.5 || ^12",
         "typo3/cms-felogin": "^11.5 || ^12",
         "typo3/cms-fluid-styled-content": "^11.5 || ^12",
-        "phpunit/phpunit": "^10"
+        "phpunit/phpunit": "^10",
+        "phpstan/phpstan": "1.8.x-dev"
     },
     "config": {
         "allow-plugins": {
