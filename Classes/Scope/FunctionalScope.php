@@ -18,11 +18,18 @@ use TYPO3\CMS\Frontend\Http\Application;
 
 class FunctionalScope
 {
+    protected string $instanceName;
+    protected string $instancePath;
+    protected ContainerInterface $container;
+
     public function __construct(
-        protected readonly string $instanceName,
-        protected readonly string $instancePath,
-        protected readonly ContainerInterface $container
+        string $instanceName,
+        string $instancePath,
+        ContainerInterface $container
     ) {
+        $this->container = $container;
+        $this->instancePath = $instancePath;
+        $this->instanceName = $instanceName;
     }
 
     /**
@@ -37,7 +44,7 @@ class FunctionalScope
         return $this->container->get($class);
     }
 
-    public function set(string $serviceName, mixed $service): self
+    public function set(string $serviceName, object $service): self
     {
         $this->container->set($serviceName, $service);
 
@@ -130,7 +137,7 @@ class FunctionalScope
 
         try {
             return $query->executeQuery()->fetchAllAssociative();
-        } catch (\Throwable) {
+        } catch (\Throwable $_) {
             throw new \RuntimeException("Could not fetch from {$table}: by {$byString} in test scope.");
         }
     }
@@ -139,7 +146,7 @@ class FunctionalScope
     {
         try {
             $this->getSchemaManager()->createTable($table);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             throw new RuntimeException('Could not create table in tests: '.$e->getMessage());
         }
 
@@ -150,7 +157,7 @@ class FunctionalScope
     {
         try {
             $this->getSchemaManager()->alterTable($tableDiff);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             throw new RuntimeException('Could not alter table in tests: '.$e->getMessage());
         }
 
@@ -165,7 +172,7 @@ class FunctionalScope
                 ->getConnectionByName('Default')
                 ->createSchemaManager()
             ;
-        } catch (Exception) {
+        } catch (Exception $_) {
             throw new RuntimeException('Could not create schema-manager in tests');
         }
     }
