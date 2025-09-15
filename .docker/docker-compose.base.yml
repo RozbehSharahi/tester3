@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: .docker/app/Dockerfile
+      args:
+        USER_ID: ${COMPOSE_USER_ID:-1000}
+        GROUP_ID: ${COMPOSE_GROUP_ID:-1000}
+        APACHE_DOCUMENT_ROOT: /var/www/html/public
+    command: bash -c "composer install && apache2-foreground"
+    environment:
+      TYPO3_CONTEXT: ${APP_TYPO3_CONTEXT:-Development}
+      XDEBUG_MODE: ${APP_XDEBUG_MODE:-debug}
+      XDEBUG_CONFIG: client_host=host client_port=9003
+      XDEBUG_SESSION: 1
+      PHP_IDE_CONFIG: serverName=tester3.local
+    volumes:
+      - ../:/var/www/html
+    extra_hosts:
+      - host:host-gateway

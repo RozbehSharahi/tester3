@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e
+
+.docker/bin/compose up -d --build

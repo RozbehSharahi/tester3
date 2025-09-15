@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace Rozbehsharahi\Tester3\Builder;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Rozbehsharahi\Tester3\Scope\FunctionalScope;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -350,9 +351,17 @@ class FunctionalScopeBuilder
         return $this->getConnectionPool()->getQueryBuilderForTable($table);
     }
 
+    /**
+     * @return AbstractSchemaManager<AbstractPlatform>
+     */
     protected function getSchemaManager(): AbstractSchemaManager
     {
-        return $this->getConnection()->createSchemaManager();
+        try {
+            return $this->getConnection()->createSchemaManager();
+        }
+        catch (\Throwable $e) {
+            throw new \RuntimeException('Could not create schema-manager: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -363,18 +372,11 @@ class FunctionalScopeBuilder
         return '<?php return '.var_export($configuration, true).';';
     }
 
-    /** @noinspection PhpExpressionResultUnusedInspection */
     protected function clearSiteFinderCache(): self
     {
         /** @var SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-
-        // Typo3 BUG: does not empty mappingRootPageIdToIdentifier on useCache = false
-        $reflection = new \ReflectionClass($siteFinder);
-        $property = $reflection->getProperty('mappingRootPageIdToIdentifier');
-        $property->setAccessible(true);
-        $property->setValue($siteFinder, []);
-
+        $siteFinder->siteConfigurationChanged();
         $siteFinder->getAllSites(false);
 
         /** @var CacheManager $cacheManager */
