@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+if [ -f .docker/bin/.env ]; then
+    source .docker/bin/.env
+fi
+
+CONTEXT=${CONTEXT:-dev}
+echo "Context was: $CONTEXT"
+
+docker compose -f .docker/docker-compose.base.yml "$@"
